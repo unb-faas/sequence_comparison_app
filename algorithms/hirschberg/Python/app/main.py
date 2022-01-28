@@ -34,8 +34,9 @@ def hAlign(a, b):
     return h.score(a, b)
 
 def align( event ):
+    
     tempPath = "/dev/shm/"
-    bd = event["body"]
+    bd = event["base64"]
     base64_message = bd
     base64_bytes = base64_message.encode('ascii')
     message_bytes = base64.b64decode(base64_bytes)
@@ -46,7 +47,7 @@ def align( event ):
     _t1 = dt["t1"]
     _t2 = dt["t2"]
     _type = dt["type"]
-    _concurrence = dt["concurrence"]
+    _concurrence = event["concurrence"]
     id = dt["id"]
     s1 = list(_s1)
     s2 = list(_s2)
@@ -111,6 +112,7 @@ app.add_middleware(
 
 class Item(BaseModel):
     base64: str
+    concurrence: str
 
 async def run_in_process(fn, *args):
     loop = asyncio.get_event_loop()
@@ -119,7 +121,7 @@ async def run_in_process(fn, *args):
 @app.put("/localhost")
 async def play(item: Item):
     #return align({"body":item.base64})
-    res = await run_in_process(align, {"body":item.base64})
+    res = await run_in_process(align, item)
     return {"result": res}
 
 
