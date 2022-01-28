@@ -12,6 +12,10 @@ from botocore.exceptions import ClientError
 import asyncio
 from concurrent.futures.process import ProcessPoolExecutor
 from fastapi import FastAPI
+import time
+
+def current_milli_time():
+    return round(time.time() * 1000)
 
 output_filename = "hirschberg-"
 s3_client = boto3.client('s3')
@@ -52,7 +56,7 @@ def align( event ):
         "algorithm":algorithm
     }
 
-    _output_filename = output_filename + str(id)
+    _output_filename = output_filename + str(id) + "_" + current_milli_time()
     _output_path = _type+"/"+_concurrence+"/"
     f = open(tempPath+_output_filename,"w+")
     f.write(json.dumps(result))
