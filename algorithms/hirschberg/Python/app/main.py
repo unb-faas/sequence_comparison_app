@@ -64,7 +64,7 @@ def align( event ):
     
     local_id = "%.20f" % time.time()
     _output_filename = output_filename + str(id) + "_" + str(local_id)
-    _output_path = _service + "/" + _repetition + "/" + _concurrence + "/"
+    _output_path = _service + "/repetition_" + _repetition + "/concurrence_" + _concurrence + "/"
     f = open(tempPath+_output_filename,"w+")
     f.write(json.dumps(result))
     f.close()
