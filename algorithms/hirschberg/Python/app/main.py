@@ -38,6 +38,7 @@ def align( event ):
     s1 = list(_s1)
     s2 = list(_s2)
     started_at = datetime.datetime.now()
+    bucket = event["bucket"]
     s3_client.create_bucket(Bucket=event["bucket"])
     
     result = {
