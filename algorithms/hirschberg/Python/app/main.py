@@ -48,7 +48,7 @@ def align( event ):
     _service = event["service"]
     _concurrence = event["concurrence"]
     _repetition = event["repetition"]
-    id = event["id"]
+    id = event["execid"]
     s1 = list(_s1)
     s2 = list(_s2)
     started_at = datetime.datetime.now()
