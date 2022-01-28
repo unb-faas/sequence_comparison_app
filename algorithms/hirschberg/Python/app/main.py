@@ -16,17 +16,9 @@ from random import seed
 from random import randint
 import time
 
-#def current_milli_time():
-#    return round(time.time() * 1000)
-
-#seed(current_milli_time())
-#local_id=randint(0, 10000)
-
-output_filename = "hirschberg-"
 s3_client = boto3.client('s3')
-algorithm = "Hirschberg"
-bucket = "sequencecomparisson"
-region = "us-west-1"
+algorithm = "hirschberg"
+output_filename = "hirschberg-"
 
 def hAlign(a, b):
     h = Hirschberg()
@@ -35,12 +27,6 @@ def hAlign(a, b):
 
 def align( event ):
     tempPath = "/dev/shm/"
-    #bd = event["base64"]
-    #base64_message = bd
-    #base64_bytes = base64_message.encode('ascii')
-    #message_bytes = base64.b64decode(base64_bytes)
-    #message = message_bytes.decode('ascii')
-    #dt = json.loads(message)
     _s1 = event["s1"]
     _s2 = event["s2"]
     _t1 = event["t1"]
@@ -52,6 +38,7 @@ def align( event ):
     s1 = list(_s1)
     s2 = list(_s2)
     started_at = datetime.datetime.now()
+    s3_client.create_bucket(Bucket=event["bucket"])
     
     result = {
         "id":id,
@@ -119,6 +106,7 @@ class Item(BaseModel):
     t1: str
     t2: str
     service: str
+    bucket: str
     
 async def run_in_process(fn, *args):
     loop = asyncio.get_event_loop()
@@ -134,7 +122,9 @@ async def play(item: Item):
                                         "s2":item.s2,
                                         "t1":item.t1,
                                         "t2":item.t2,
-                                        "service":item.service
+                                        "service":item.service,
+                                        "region":item.region,
+                                        "bucket":item.bucket
                                       })
     return {"result": res}
 
