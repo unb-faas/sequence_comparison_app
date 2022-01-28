@@ -121,7 +121,7 @@ async def run_in_process(fn, *args):
 @app.put("/localhost")
 async def play(item: Item):
     #return align({"body":item.base64})
-    res = await run_in_process(align, item)
+    res = await run_in_process(align, {"base64":item.base64, "concurrence":item.concurrence})
     return {"result": res}
 
 
