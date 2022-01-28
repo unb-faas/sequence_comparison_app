@@ -123,7 +123,6 @@ async def play(item: Item):
                                         "t1":item.t1,
                                         "t2":item.t2,
                                         "service":item.service,
-                                        "region":item.region,
                                         "bucket":item.bucket
                                       })
     return {"result": res}
