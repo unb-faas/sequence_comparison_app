@@ -56,7 +56,7 @@ def align( event ):
         "algorithm":algorithm
     }
 
-    _output_filename = output_filename + str(id) + "_" + current_milli_time()
+    _output_filename = output_filename + str(id) + "_" + str(current_milli_time())
     _output_path = _type+"/"+_concurrence+"/"
     f = open(tempPath+_output_filename,"w+")
     f.write(json.dumps(result))
