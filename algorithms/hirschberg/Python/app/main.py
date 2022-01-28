@@ -39,9 +39,10 @@ def align( event ):
     s2 = list(_s2)
     started_at = datetime.datetime.now()
     bucket = event["bucket"]
-    if not s3_client.Bucket(bucket).creation_date:
+    try:
         s3_client.create_bucket(Bucket=bucket)
-    
+    except:
+        print("bucket exists")
     result = {
         "id":id,
         "service":_service,
