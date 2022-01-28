@@ -15,12 +15,13 @@ from fastapi import FastAPI
 from random import seed
 from random import randint
 import time
+local_id = "%.20f" % time.time()
 
-def current_milli_time():
-    return round(time.time() * 1000)
+#def current_milli_time():
+#    return round(time.time() * 1000)
 
-seed(current_milli_time())
-local_id=randint(0, 10000)
+#seed(current_milli_time())
+#local_id=randint(0, 10000)
 
 output_filename = "hirschberg-"
 s3_client = boto3.client('s3')
