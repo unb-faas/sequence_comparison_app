@@ -14,7 +14,12 @@ from concurrent.futures.process import ProcessPoolExecutor
 from fastapi import FastAPI
 from random import seed
 from random import randint
-seed(1)
+import time
+
+def current_milli_time():
+    return round(time.time() * 1000)
+
+seed(current_milli_time())
 local_id=randint(0, 10000)
 
 output_filename = "hirschberg-"
