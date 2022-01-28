@@ -45,7 +45,7 @@ def align( event ):
     _s2 = event["s2"]
     _t1 = event["t1"]
     _t2 = event["t2"]
-    _type = event["type"]
+    _service = event["service"]
     _concurrence = event["concurrence"]
     _repetition = event["repetition"]
     id = event["id"]
@@ -55,7 +55,7 @@ def align( event ):
     
     result = {
         "id":id,
-        "type":_type,
+        "service":_service,
         "started_at":str(started_at),
         "s1": {"content":_s1, "title":_t1, "length":len(s1)},
         "s2": {"content":_s2, "title":_t2, "length":len(s2)},
@@ -64,7 +64,7 @@ def align( event ):
     
     local_id = "%.20f" % time.time()
     _output_filename = output_filename + str(id) + "_" + str(local_id)
-    _output_path = _type + "/" + _repetition + "/" + _concurrence + "/"
+    _output_path = _service + "/" + _repetition + "/" + _concurrence + "/"
     f = open(tempPath+_output_filename,"w+")
     f.write(json.dumps(result))
     f.close()
@@ -81,7 +81,7 @@ def align( event ):
     
     result = {
         "id":id,
-        "type":_type,
+        "service":_service,
         "started_at":str(started_at),
         "finished_at":str(finished_at),
         "s1": {"content":_s1, "title":_t1, "length":len(s1),"align":align_s1},
