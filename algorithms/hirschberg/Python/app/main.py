@@ -34,21 +34,21 @@ def hAlign(a, b):
     return h.score(a, b)
 
 def align( event ):
-    
     tempPath = "/dev/shm/"
-    bd = event["base64"]
-    base64_message = bd
-    base64_bytes = base64_message.encode('ascii')
-    message_bytes = base64.b64decode(base64_bytes)
-    message = message_bytes.decode('ascii')
-    dt = json.loads(message)
-    _s1 = dt["s1"]
-    _s2 = dt["s2"]
-    _t1 = dt["t1"]
-    _t2 = dt["t2"]
-    _type = dt["type"]
+    #bd = event["base64"]
+    #base64_message = bd
+    #base64_bytes = base64_message.encode('ascii')
+    #message_bytes = base64.b64decode(base64_bytes)
+    #message = message_bytes.decode('ascii')
+    #dt = json.loads(message)
+    _s1 = event["s1"]
+    _s2 = event["s2"]
+    _t1 = event["t1"]
+    _t2 = event["t2"]
+    _type = event["type"]
     _concurrence = event["concurrence"]
-    id = dt["id"]
+    _repetition = event["repetition"]
+    id = event["id"]
     s1 = list(_s1)
     s2 = list(_s2)
     started_at = datetime.datetime.now()
@@ -64,7 +64,7 @@ def align( event ):
     
     local_id = "%.20f" % time.time()
     _output_filename = output_filename + str(id) + "_" + str(local_id)
-    _output_path = _type+"/"+_concurrence+"/"
+    _output_path = _type + "/" + _repetition + "/" + _concurrence + "/"
     f = open(tempPath+_output_filename,"w+")
     f.write(json.dumps(result))
     f.close()
@@ -111,17 +111,31 @@ app.add_middleware(
 )
 
 class Item(BaseModel):
-    base64: str
+    execid: str
+    repetition: str
     concurrence: str
-
+    s1: str
+    s2: str
+    t1: str
+    t2: str
+    service: str
+    
 async def run_in_process(fn, *args):
     loop = asyncio.get_event_loop()
     return await loop.run_in_executor(app.state.executor, fn, *args)
 
 @app.put("/localhost")
 async def play(item: Item):
-    #return align({"body":item.base64})
-    res = await run_in_process(align, {"base64":item.base64, "concurrence":item.concurrence})
+    res = await run_in_process(align, {
+                                        "execid":item.execid, 
+                                        "repetition":item.repetition,
+                                        "concurrence":item.concurrence,
+                                        "s1":item.s1,
+                                        "s2":item.s2,
+                                        "t1":item.t1,
+                                        "t2":item.t2,
+                                        "service":item.service
+                                      })
     return {"result": res}
 
 
