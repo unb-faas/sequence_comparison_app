@@ -15,7 +15,6 @@ from fastapi import FastAPI
 from random import seed
 from random import randint
 import time
-local_id = "%.20f" % time.time()
 
 #def current_milli_time():
 #    return round(time.time() * 1000)
@@ -61,7 +60,8 @@ def align( event ):
         "s2": {"content":_s2, "title":_t2, "length":len(s2)},
         "algorithm":algorithm
     }
-
+    
+    local_id = "%.20f" % time.time()
     _output_filename = output_filename + str(id) + "_" + str(local_id)
     _output_path = _type+"/"+_concurrence+"/"
     f = open(tempPath+_output_filename,"w+")
