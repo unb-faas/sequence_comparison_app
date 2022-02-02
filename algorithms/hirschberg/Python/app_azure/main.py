@@ -11,10 +11,12 @@ from fastapi import FastAPI
 import time
 from azure.storage.blob import BlobServiceClient
 import os
+from dotenv import load_dotenv
 
-#Storage Accout Service Connection String from .azure file
-with open('.azure', 'r') as connect_str:
-    blob_service_client = BlobServiceClient.from_connection_string(connect_str.read())
+load_dotenv()
+
+connect_str = os.getenv('connect_str')
+blob_service_client = BlobServiceClient.from_connection_string(connect_str)
 
 algorithm = "hirschberg"
 output_filename = "hirschberg-"
