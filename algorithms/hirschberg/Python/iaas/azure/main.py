@@ -11,12 +11,6 @@ from fastapi import FastAPI
 import time
 from azure.storage.blob import BlobServiceClient
 import os
-from dotenv import load_dotenv
-
-load_dotenv()
-
-connect_str = os.getenv('connect_str')
-blob_service_client = BlobServiceClient.from_connection_string(connect_str)
 
 algorithm = "hirschberg"
 output_filename = "hirschberg-"
@@ -40,7 +34,9 @@ def align( event ):
     s2 = list(_s2)
     started_at = datetime.datetime.now()
     container_name = event["container"]
-    
+    storage_account_string_connection = event["storage_account_string_connection"]
+    blob_service_client = BlobServiceClient.from_connection_string(storage_account_string_connection)
+
     blob = blob_service_client.get_container_client(container_name)
     if not blob.exists():
         blob_service_client.create_container(container_name)
@@ -122,6 +118,7 @@ class Item(BaseModel):
     t2: str
     service: str
     container: str
+    storage_account_string_connection: str
     
 async def run_in_process(fn, *args):
     loop = asyncio.get_event_loop()
@@ -138,7 +135,8 @@ async def play(item: Item):
                                         "t1":item.t1,
                                         "t2":item.t2,
                                         "service":item.service,
-                                        "container":item.container
+                                        "container":item.container,
+                                        "storage_account_string_connection": item.storage_account_string_connection,
                                       })
     return {"result": res}
 
