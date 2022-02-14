@@ -136,7 +136,7 @@ async def play(item: Item):
                                         "t2":item.t2,
                                         "service":item.service,
                                         "container":item.container,
-                                        "storage_account_string_connection": item.storageConnection,
+                                        "storageConnection": item.storageConnection,
                                       })
     return {"result": res}
 
