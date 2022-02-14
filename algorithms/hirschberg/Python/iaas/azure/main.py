@@ -34,7 +34,7 @@ def align( event ):
     s2 = list(_s2)
     started_at = datetime.datetime.now()
     container_name = event["container"]
-    storage_account_string_connection = event["storage_account_string_connection"]
+    storage_account_string_connection = event["storageConnection"]
     blob_service_client = BlobServiceClient.from_connection_string(storage_account_string_connection)
 
     blob = blob_service_client.get_container_client(container_name)
@@ -118,7 +118,7 @@ class Item(BaseModel):
     t2: str
     service: str
     container: str
-    storage_account_string_connection: str
+    storageConnection: str
     
 async def run_in_process(fn, *args):
     loop = asyncio.get_event_loop()
@@ -136,7 +136,7 @@ async def play(item: Item):
                                         "t2":item.t2,
                                         "service":item.service,
                                         "container":item.container,
-                                        "storage_account_string_connection": item.storage_account_string_connection,
+                                        "storage_account_string_connection": item.storageConnection,
                                       })
     return {"result": res}
 
