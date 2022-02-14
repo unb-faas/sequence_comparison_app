@@ -476,7 +476,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             status_code=500
         )
     else:
-        connect_str = event["storage_account_string_connection"]
+        connect_str = event["storageConnection"]
         try:
             blob_service_client = BlobServiceClient.from_connection_string(connect_str)
         except:
